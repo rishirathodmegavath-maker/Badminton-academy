@@ -53,6 +53,25 @@ export function localInstant(date: string, time: string, timezone: string) {
     );
   }
 }
+/**
+ * What is still missing before a draft can be published, in plain words. The editor shows this beside the Publish button,
+ * and the server states it when a publish is refused, so a draft never just stays a draft without saying why.
+ */
+export function publishBlockers(data: SessionData): string[] {
+  const missing: string[] = [];
+  if (!data.title.trim()) missing.push("add a session title");
+  if (!data.batchId) missing.push("choose a batch");
+  if (!data.branchId) missing.push("choose a branch");
+  if (!data.coachId) missing.push("choose a coach");
+  if (!data.localDate || !data.localTime) missing.push("set the date and time");
+  if (!data.objective.trim()) missing.push("write the session objective");
+  if (!data.activities.length) missing.push("add at least one activity");
+  else if (totalMinutes(data.activities) !== data.duration)
+    missing.push(
+      `make the activities add up to the ${data.duration}-minute duration (now ${totalMinutes(data.activities)})`,
+    );
+  return missing;
+}
 export function validatePublish(data: SessionData) {
   if (
     !data.title ||

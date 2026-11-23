@@ -13,7 +13,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import type { Bootstrap, TrainingSession, SessionData } from "../domain/types";
-import { totalMinutes } from "../domain/rules";
+import { publishBlockers, totalMinutes } from "../domain/rules";
 import { Modal, type RunMutation } from "./common";
 import { formatDate } from "../../academy/ui/labels";
 export default function Builder({
@@ -45,6 +45,7 @@ export default function Builder({
   const change = (values: Partial<SessionData>) =>
     onChange({ ...d, ...values });
   const batchPlayers = context.players.filter((p) => p.batchId === d.batchId);
+  const blockers = publishBlockers(d);
   async function publish() {
     const saved = dirty
       ? await mutate(session.id, session.version, "save", d)
@@ -470,6 +471,11 @@ export default function Builder({
           </button>
         </div>
       </fieldset>
+      {blockers.length > 0 && (
+        <p className="builder-note" role="note">
+          <strong>Still a draft.</strong> To publish: {blockers.join(", ")}.
+        </p>
+      )}
       <p className="builder-note">
         <Check size={13} />
         Plans stay private to your academy. Publishing does not send a parent

@@ -9,6 +9,7 @@ import {
   DomainError,
   draftInput,
   elapsedSeconds,
+  publishBlockers,
   requireTransition,
   validatePublish,
 } from "../domain/rules";
@@ -379,6 +380,11 @@ export async function mutateSession(actor: Actor, id: string, input: unknown) {
       });
     }
     if (command.action === "publish") {
+      // Say what is missing before anything else, so an unfinished draft is told exactly what to complete (the batch check
+      // below would otherwise answer an empty batch with a vague "recheck" message). The minutes rule keeps its own message.
+      const missing = publishBlockers(data).filter((m) => !m.startsWith("make the activities add up"));
+      if (missing.length)
+        throw new DomainError(`This session is still a draft. To publish it, ${missing.join(", ")}.`);
       const [batch] = await tx
         .select()
         .from(t.batches)
@@ -389,7 +395,7 @@ export async function mutateSession(actor: Actor, id: string, input: unknown) {
         batch.branchId !== data.branchId
       )
         throw new DomainError(
-          "Recheck the batch, branch and coach assignment.",
+          "The branch or coach chosen does not match this batch's. Choose the batch again to reset them, then publish.",
         );
       data.roster = await tx
         .select({ id: t.players.id, name: t.players.name })
