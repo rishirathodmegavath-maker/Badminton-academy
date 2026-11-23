@@ -1,15 +1,15 @@
 :root {
-  --navy: #112a37;
-  --navy-deep: #0d2330;
+  --navy: #0f172a;
+  --navy-deep: #090d16;
   --ink: #182e3b;
   --muted: #76828b;
-  --green: #17644e;
-  --green-dark: #0d503e;
-  --mint: #eaf3ed;
+  --green: #15803d;
+  --green-dark: #166534;
+  --mint: #ecfdf5;
   --lime: #d6e7aa;
-  --line: #e2e8e5;
+  --line: #e2e8f0;
   --surface: #fff;
-  --bg: #f5f7f5;
+  --bg: #f8fafc;
   --amber: #9c661d;
   --red: #ad403b;
   --radius: 10px;

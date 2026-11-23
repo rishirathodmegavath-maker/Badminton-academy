@@ -1,13 +1,13 @@
 :root {
-  --navy: #10273d;
-  --navy-deep: #0a1e31;
+  --navy: #0f172a;
+  --navy-deep: #090d16;
   --ink: #10243a;
   --muted: #64748b;
-  --green: #087047;
-  --green-dark: #075839;
-  --mint: #e8f8ef;
+  --green: #15803d;
+  --green-dark: #166534;
+  --mint: #ecfdf5;
   --line: #e2e8ef;
-  --bg: #f4f7fa;
+  --bg: #f8fafc;
   --radius: 9px;
 }
 body {
@@ -3753,10 +3753,10 @@ label {
    Monthly development report: preparation workflow (left) + live preview (right)
    ─────────────────────────────────────────────────────────────────────────── */
 .report-studio {
-  --rs-green: #17644e;
-  --rs-green-dark: #0d503e;
-  --rs-navy: #112a37;
-  --rs-mint: #eaf3ed;
+  --rs-green: #15803d;
+  --rs-green-dark: #166534;
+  --rs-navy: #0f172a;
+  --rs-mint: #ecfdf5;
   --rs-line: #dfe7e2;
   --rs-muted: #56646c;
   display: grid;
@@ -3913,7 +3913,7 @@ label {
 }
 .rs-att-present {
   background: var(--success-bg);
-  color: #0d503e;
+  color: #166534;
 }
 .rs-att-absent {
   background: var(--error-bg);
@@ -4059,7 +4059,7 @@ label {
   gap: 8px;
 }
 .rs-checks .ok svg {
-  color: #17644e;
+  color: #15803d;
 }
 .rs-checks .warn svg {
   color: #9c661d;
@@ -4067,9 +4067,9 @@ label {
 
 /* The report itself */
 .rs-sheet {
-  --rs-green: #17644e;
-  --rs-green-dark: #0d503e;
-  --rs-navy: #112a37;
+  --rs-green: #15803d;
+  --rs-green-dark: #166534;
+  --rs-navy: #0f172a;
   --rs-line: #dfe7e2;
   --rs-muted: #56646c;
   border: 1px solid var(--rs-line);
@@ -4087,7 +4087,7 @@ label {
   align-items: center;
   gap: 14px;
   padding: 22px 24px;
-  background: linear-gradient(120deg, #17644e 0%, #0f4a3a 70%, #112a37 100%);
+  background: linear-gradient(120deg, #15803d 0%, #0f4a3a 70%, #0f172a 100%);
   color: var(--white);
 }
 .rs-brand {
@@ -4139,7 +4139,7 @@ label {
   width: 62px;
   height: 62px;
   border-radius: 50%;
-  background: #eaf3ed;
+  background: #ecfdf5;
   border: 2px solid var(--rs-green);
   color: var(--rs-green);
   font-family: var(--heading);
@@ -4165,7 +4165,7 @@ label {
 .rs-chip {
   padding: 2px 10px;
   border-radius: 999px;
-  background: #eaf3ed;
+  background: #ecfdf5;
   color: var(--rs-green-dark);
   font-weight: 700;
   font-size: var(--fs-xs);
@@ -4176,7 +4176,7 @@ label {
   gap: 10px;
   padding: 10px 14px;
   border-radius: 10px;
-  background: #eaf3ed;
+  background: #ecfdf5;
   color: var(--rs-green);
 }
 .rs-attendance > div {
@@ -4231,7 +4231,7 @@ label {
 }
 .rs-source-coach {
   background: var(--success-bg);
-  color: #0d503e;
+  color: #166534;
 }
 .rs-sheet .rs-stats dd {
   font-size: var(--fs-2xl);
@@ -4399,7 +4399,7 @@ label {
 .rs-status-published,
 .rs-status-approved {
   background: var(--success-bg);
-  color: #0d503e;
+  color: #166534;
 }
 .rs-status-withdrawn {
   background: var(--error-bg);
@@ -4587,7 +4587,7 @@ label {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #f4f8f6;
-  color: #17644e;
+  color: #15803d;
   font-weight: 800;
   font-size: var(--fs-3xl);
   overflow: hidden;
@@ -4642,7 +4642,7 @@ label {
   font-size: var(--fs-2xs);
   font-weight: 800;
   letter-spacing: 0.02em;
-  color: #17644e;
+  color: #15803d;
   background: var(--success-bg);
   border-radius: 999px;
   padding: 4px 10px;
@@ -4923,7 +4923,7 @@ label {
 .rs-status-chip.rs-status-published,
 .rs-status-chip.rs-status-approved {
   background: var(--success-bg);
-  color: #0d503e;
+  color: #166534;
 }
 .rs-status-chip.rs-status-in_review {
   background: #fbf3e3;

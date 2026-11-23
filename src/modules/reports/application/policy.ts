@@ -7,6 +7,7 @@ import { can, requireCapability } from "../../identity/authority";
 import { DomainError } from "../../training/domain/rules";
 import { accessiblePlayers, history, requireFeature, unit, type Tx } from "../../academy/application/access";
 import { assembleDraft } from "./draft";
+import { writeFromRecords } from "../domain/batch-rules";
 import {
   DEFAULT_POLICY,
   OBSERVATION_CATEGORIES,
@@ -149,6 +150,13 @@ export async function prepareDraft(a: Actor, due: DueDraft, via: "manual" | "sch
         { academyId: a.academyId, academyName: a.academyName, coachOnlyId: can(a, "training.allSessions") ? undefined : a.id },
         player,
         { periodStart: due.periodStart, periodEnd: due.periodEnd, title: due.title },
+      );
+      // Written from the records like the one-click batch report (counts and reviewed coach observations only), for the coach to
+      // edit. Still only a DRAFT: nothing is approved or delivered here.
+      Object.assign(
+        data,
+        writeFromRecords({ playerName: player.name, periodStart: due.periodStart, periodEnd: due.periodEnd, evidence: data.evidence, analysis: data.analysis }),
+        { autoWritten: true },
       );
       const id = crypto.randomUUID();
       await tx.insert(t.reports).values({ id, academyId: a.academyId, playerId: player.id, data });

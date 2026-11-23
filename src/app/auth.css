@@ -993,7 +993,7 @@
   cursor: pointer;
   font-weight: 600;
   font-size: var(--fs-md);
-  color: var(--brand, #17644e);
+  color: var(--brand, #15803d);
   margin-bottom: 0.6rem;
 }
 .auth-subheading {

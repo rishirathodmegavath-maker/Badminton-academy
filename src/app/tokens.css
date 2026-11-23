@@ -1,14 +1,14 @@
 /*
  * Sportozen Badminton Academy — design tokens (Phase 9). Loaded LAST so it refines the legacy variables.
  *
- * Brand: the existing deep navy and green are KEPT. Only values that failed WCAG 2.2 AA were refined, and the
- * status, border and focus tokens that did not exist as a system were added. `npm run check:contrast`
- * recomputes every pair below and fails if one drops under its required ratio.
+ * Brand: the same palette, type and geometry as the Football app (Nov 2026), so the two products look like one: deep slate navy
+ * #0f172a, green #15803d, canvas #f8fafc, 8 px radius, Noto Sans. Every text and control pair below is re-checked by
+ * `npm run check:contrast` (WCAG 2.2 AA), so a colour here cannot drop under its required ratio.
  *
- *   Kept        --navy #10273d, --navy-deep #0a1e31, --green #087047, --green-dark #075839, --mint #e8f8ef, --bg #f4f7fa
- *   Refined     --muted #64748b (4.43:1 on --bg, fails) -> --text-muted #536276 (5.78:1 on --bg, 6.22:1 on white)
- *   Added       --border-strong (controls, 3:1), status text/tint pairs, focus rings, sidebar text roles
- *   Fonts       Noto Sans for headings and body (UX-D3); was Manrope (headings) and DM Sans (body)
+ *   Palette     --navy #0f172a, --navy-deep #090d16, --green #15803d, --green-dark #166534, --mint #ecfdf5, --bg #f8fafc
+ *   Text        --ink #0f172a, --text-muted #64748b (4.76:1 on --bg and on white)
+ *   Controls    --border-strong stays #718196 so form controls keep 3:1 (WCAG 1.4.11)
+ *   Fonts       Noto Sans for headings and body
  */
 /* Noto Sans (UX-D3): one UI font for headings and body, vendored from @fontsource-variable/noto-sans 5.3.0 (SIL OFL 1.1,
    public/fonts/OFL.txt). Latin, Latin extended and Devanagari (the rupee sign U+20B9 lives there). No package is installed. */
@@ -38,36 +38,36 @@
 }
 :root {
   /* Brand */
-  --navy: #10273d;
-  --navy-deep: #0a1e31;
-  --navy-soft: #1a3a56; /* hover on navy surfaces */
-  --green: #087047; /* primary action; 6.14:1 on white, white text on it 6.14:1 */
-  --green-dark: #075839; /* hover/pressed; white text 8.52:1 */
-  --green-graphic: #0c8a58; /* icons and illustrations only (>= 3:1) */
-  --mint: #e8f8ef;
-  --mint-strong: #cdeedd;
+  --navy: #0f172a;
+  --navy-deep: #090d16;
+  --navy-soft: #1e293b; /* hover on navy surfaces */
+  --green: #15803d; /* primary action; 6.14:1 on white, white text on it 6.14:1 */
+  --green-dark: #166534; /* hover/pressed; white text 8.52:1 */
+  --green-graphic: #16a34a; /* icons and illustrations only (>= 3:1) */
+  --mint: #ecfdf5;
+  --mint-strong: #d1fae5;
 
   /* Surfaces */
-  --bg: #f4f7fa;
+  --bg: #f8fafc;
   --surface: #ffffff;
   --surface-raised: #ffffff;
-  --surface-sunken: #eaf0f5;
+  --surface-sunken: #f1f5f9;
 
   /* Text (all >= 4.5:1 on --surface and on --bg) */
-  --ink: #10243a; /* 15.2:1 */
+  --ink: #0f172a; /* 17.8:1 */
   --text: var(--ink);
-  --text-muted: #536276; /* 6.22:1 on white, 5.78:1 on --bg */
+  --text-muted: #64748b; /* 4.76:1 on white and on --bg */
   --muted: var(--text-muted); /* legacy name */
   --text-on-green: #ffffff;
-  --link: #087047;
+  --link: #15803d;
 
   /* Borders */
-  --line: #dde5ee; /* decorative dividers and card edges */
+  --line: #e2e8f0; /* decorative dividers and card edges */
   --border: var(--line);
   --border-strong: #718196; /* form controls: 3.7:1 on --bg (WCAG 1.4.11) */
 
   /* Interaction states */
-  --hover-bg: #eef3f8;
+  --hover-bg: #f1f5f9;
   --active-bg: var(--mint);
   --disabled-bg: #e9eef3;
   --disabled-text: #66768a; /* informational only; disabled controls are exempt but kept legible */
@@ -90,18 +90,23 @@
   --focus-ring: 0 0 0 3px #fff, 0 0 0 5px var(--focus);
 
   /* Navy surfaces (sidebar, drawers) */
-  --nav-text: #c9d6e2; /* 10.29:1 on --navy */
-  --nav-text-muted: #9fb3c8; /* 7.07:1 on --navy */
+  --nav-text: #cbd5e1; /* 10.29:1 on --navy */
+  --nav-text-muted: #94a3b8; /* 7.07:1 on --navy */
+  --nav-accent: #4ade80; /* the small product label under the wordmark; 9.9:1 on --navy */
+  --nav-item-text: #94a3b8; /* 6.96:1 on --navy */
+  --nav-icon: #64748b; /* icons: 3.75:1 on --navy (non-text 3:1) */
+  --nav-active-fill: rgba(21, 128, 61, 0.25);
+  --nav-active-ring: rgba(74, 222, 128, 0.3);
   --nav-active-bg: var(--green);
   --nav-active-text: #ffffff;
-  --nav-hover-bg: var(--navy-soft);
+  --nav-hover-bg: rgba(255, 255, 255, 0.06);
 
   /* Geometry */
-  --radius: 10px;
-  --radius-sm: 7px;
-  --radius-lg: 14px;
-  --shadow: 0 1px 2px #10273d0f, 0 4px 16px #10273d0d;
-  --shadow-raised: 0 8px 28px #10273d24;
+  --radius: 8px;
+  --radius-sm: 6px;
+  --radius-lg: 12px;
+  --shadow: 0 1px 2px #0f172a0f, 0 4px 16px #0f172a0d;
+  --shadow-raised: 0 8px 28px #0f172a24;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -112,7 +117,7 @@
   --space-8: 48px;
   --touch: 44px; /* minimum touch target */
   --white: #ffffff; /* text and icons on dark or coloured surfaces; surfaces use --surface */
-  --line-soft: #eef3f8; /* faint separators inside a card (rows, table lines) */
+  --line-soft: #f1f5f9; /* faint separators inside a card (rows, table lines) */
 
   /* Type scale (Wave 5). Every font-size is one of these; ties between steps were resolved up for small text, down for large. */
   --fs-2xs: 11px;
@@ -134,7 +139,7 @@
        laptop       max-width 1279     min-width 1280
        wide         max-width 1535     min-width 1536
      Write max-width queries as (scale value - 1) and min-width queries as the scale value, so two queries never overlap or leave a gap. */
-  --sidebar-width: 244px;
+  --sidebar-width: 240px;
   --sidebar-collapsed: 72px;
   --header-height: 60px;
   --font: "Noto Sans Variable", "Noto Sans", Arial, sans-serif;

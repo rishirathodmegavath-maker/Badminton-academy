@@ -244,8 +244,13 @@ export function AppShell({
       >
         <div className="ax-sidebar-top">
           <Link className="ax-wordmark" href={homeHref} onClick={(e) => guard && !guard() && e.preventDefault()}>
-            <span className="ax-wordmark-name">Sportozen</span>
-            <span className="ax-wordmark-product">{product}</span>
+            {/* The Sportozen platform symbol, as in the Football app. Decorative: the wordmark beside it carries the name. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="ax-symbol" src="/brand/sportozen-logo.png" alt="" aria-hidden="true" width={259} height={313} />
+            <span className="ax-wordmark-text">
+              <span className="ax-wordmark-name">Sportozen</span>
+              <span className="ax-wordmark-product">{product}</span>
+            </span>
           </Link>
           {drawerMode && (
             <button className="ax-icon-button ax-on-dark" aria-label="Close navigation" onClick={closeDrawer}>

@@ -241,7 +241,10 @@ test("due drafts are listed, created once as DRAFTS, never duplicate and never t
   const created = (await reportRows()).filter((r) => !before.some((b) => b.id === r.id));
   assert.equal(created.length, 2);
   assert.ok(created.every((r) => r.status === "DRAFT" && r.version === 1), "drafts only, never approved or published");
-  assert.ok(created.every((r) => r.data.summary === "" && r.data.strengths === ""), "no coach words are written");
+  assert.ok(
+    created.every((r) => r.data.autoWritten === true && r.data.summary.length > 0 && (r.data.strengths ?? "").length > 0 && !/excellent|great|improved|struggl|outstanding|poor/i.test(`${r.data.summary} ${r.data.strengths} ${r.data.improvements}`)),
+    "written from the records only: counts and recorded observations, no praise or scores",
+  );
   const hist = await database().select().from(t.recordRevisions).where(eq(t.recordRevisions.entityId, created[0].id));
   assert.equal((hist[0].data as { via: string }).via, "manual");
   const again = await createDueDrafts(owner, undefined, now);

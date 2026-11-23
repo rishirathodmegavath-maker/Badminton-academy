@@ -33,8 +33,9 @@
 }
 .ax-wordmark {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
   min-height: var(--touch);
   color: var(--white);
   text-decoration: none;
@@ -42,17 +43,29 @@
   padding: 0 var(--space-2);
   border-radius: var(--radius-sm);
 }
+.ax-symbol {
+  height: 44px;
+  width: auto;
+  flex: none;
+}
+.ax-wordmark-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
 .ax-wordmark-name {
   font-family: var(--heading);
-  font-weight: 800;
-  font-size: var(--fs-2xl);
+  font-weight: 700;
+  font-size: var(--fs-lg);
   letter-spacing: -0.02em;
 }
 .ax-wordmark-product {
   font-size: var(--fs-2xs);
-  letter-spacing: 0.12em;
-  color: var(--nav-text-muted);
-  margin-top: 3px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--nav-accent);
+  margin-top: 1px;
 }
 .ax-academy {
   display: flex;
@@ -111,14 +124,14 @@
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  min-height: var(--touch);
+  min-height: 40px;
   padding: 0 var(--space-3);
   border: 0;
   border-radius: var(--radius-sm);
   background: transparent;
-  color: var(--nav-text);
+  color: var(--nav-item-text);
   font: inherit;
-  font-size: var(--fs-base);
+  font-size: var(--fs-md);
   font-weight: 500;
   text-align: left;
   text-decoration: none;
@@ -128,14 +141,22 @@
   background: var(--nav-hover-bg);
   color: var(--white);
 }
+/* The active item reads like the Football app's: a soft green fill with a thin green ring, not a solid block. */
 .ax-nav-item[aria-current="page"] {
-  background: var(--nav-active-bg);
+  background: var(--nav-active-fill);
   color: var(--nav-active-text);
-  font-weight: 700;
-  box-shadow: inset 3px 0 0 var(--mint);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--nav-active-ring);
 }
 .ax-nav-item svg {
   flex: none;
+  color: var(--nav-icon);
+}
+.ax-nav-item:hover svg {
+  color: var(--nav-text);
+}
+.ax-nav-item[aria-current="page"] svg {
+  color: var(--nav-accent);
 }
 .ax-chip {
   margin-left: auto;
@@ -177,7 +198,7 @@
 /* Collapsed sidebar: icons only; names remain available to assistive technology and as tooltips. */
 .ax-shell[data-collapsed="true"] .ax-academy-text,
 .ax-shell[data-collapsed="true"] .ax-account-text,
-.ax-shell[data-collapsed="true"] .ax-wordmark,
+.ax-shell[data-collapsed="true"] .ax-wordmark-text,
 .ax-shell[data-collapsed="true"] .ax-chip,
 .ax-shell[data-collapsed="true"] .ax-nav-label {
   position: absolute;
@@ -348,7 +369,7 @@
   position: fixed;
   inset: 0;
   z-index: 25;
-  background: #0a1e3180;
+  background: #090d1680;
 }
 
 /* ---- Laptops, tablets and phones (below 1280 px): the sidebar is a drawer; from 1280 px it stays on screen ---- */
@@ -879,7 +900,7 @@ button.rh-metric:hover {
   background: var(--surface);
   color: var(--green-dark);
   border-color: var(--line);
-  box-shadow: 0 2px 10px #17644e1f;
+  box-shadow: 0 2px 10px #15803d1f;
 }
 .training-steps .step-number {
   display: inline-grid;
@@ -914,7 +935,7 @@ button.rh-metric:hover {
 .training-box .library .drill-card:focus-within {
   transform: translateY(-2px);
   border-color: #b9d4c6;
-  box-shadow: 0 10px 24px #17644e1a;
+  box-shadow: 0 10px 24px #15803d1a;
 }
 /* Drill details open full width: the picture on one side, the instructions on the other. */
 .training-box .drill-preview { max-width: 1100px; margin: 0 auto; }
@@ -970,9 +991,9 @@ button.rh-metric:hover {
 
 /* ---- Polish layer (Wave 2-4 review): depth, hover and focus feedback shared by every screen; motion respects the user's setting ---- */
 :root {
-  --lift-shadow: 0 1px 2px #10182808, 0 6px 18px #17644e14;
-  --lift-shadow-strong: 0 2px 4px #10182810, 0 12px 28px #17644e24;
-  --focus-ring: 0 0 0 3px #17644e2e;
+  --lift-shadow: 0 1px 2px #10182808, 0 6px 18px #15803d14;
+  --lift-shadow-strong: 0 2px 4px #10182810, 0 12px 28px #15803d24;
+  --focus-ring: 0 0 0 3px #15803d2e;
 }
 .panel,
 .metric-card,
@@ -997,7 +1018,7 @@ a.secondary {
 }
 button.primary:hover:not(:disabled),
 a.primary:hover {
-  box-shadow: 0 4px 12px #17644e40;
+  box-shadow: 0 4px 12px #15803d40;
   transform: translateY(-1px);
   filter: none;
   background: var(--green-dark);
@@ -1006,7 +1027,7 @@ button.secondary:hover:not(:disabled),
 a.secondary:hover {
   background: var(--mint);
   border-color: #b6cfbd;
-  box-shadow: 0 2px 8px #17644e14;
+  box-shadow: 0 2px 8px #15803d14;
   filter: none;
 }
 button.primary:active:not(:disabled),
