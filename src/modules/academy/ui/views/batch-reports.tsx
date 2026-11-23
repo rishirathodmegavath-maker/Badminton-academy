@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { WorkspaceProps } from "../context";
 import { academyRequest, Status } from "../shared";
 import { Pane, Blank } from "../workbench";
@@ -84,8 +84,8 @@ export function BatchReports(p: WorkspaceProps & { openReport: (reportId: string
     await load();
     await p.reload?.();
   }
-  async function createDrafts() {
-    if (!range || !needDraft.length) return;
+  async function createDrafts(list: Row[] = needDraft) {
+    if (!range || !list.length) return;
     setWorking(true);
     setError("");
     try {
@@ -93,7 +93,7 @@ export function BatchReports(p: WorkspaceProps & { openReport: (reportId: string
         periodStart: range.start,
         periodEnd: range.end,
         title: range.title,
-        playerIds: needDraft.map((r) => r.playerId),
+        playerIds: list.map((r) => r.playerId),
       });
       setDrafts(out.results);
       await refresh();
@@ -137,6 +137,17 @@ export function BatchReports(p: WorkspaceProps & { openReport: (reportId: string
       },
     });
   }
+  // Choosing a batch makes a draft for every one of its players who has none, once for each batch and month, without a press.
+  // Each is still its own report: it is built from recorded sessions and attendance only, no words are written for the coach, and
+  // nothing is approved or published until someone does that. (Left on "All my players", nothing is made until the button is used.)
+  const autoDrafted = useRef("");
+  useEffect(() => {
+    if (!batchId || !rows || !canDraft || working || autoDrafted.current === key) return;
+    const missing = rows.filter((r) => !r.report);
+    autoDrafted.current = key;
+    if (missing.length) void createDrafts(missing);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rows, batchId, canDraft, key]);
   const toggle = (id: string) =>
     setPicked((old) => {
       const next = new Set(old);
@@ -167,7 +178,8 @@ export function BatchReports(p: WorkspaceProps & { openReport: (reportId: string
           </label>
         </div>
         <p className="muted">
-          Pick specific players below to work on only them, or leave every box empty to work on everyone listed.
+          Choosing a batch creates a separate draft report for each of its players automatically. Pick specific players below to work
+          on only them, or leave every box empty to work on everyone listed.
         </p>
       </Pane>
 

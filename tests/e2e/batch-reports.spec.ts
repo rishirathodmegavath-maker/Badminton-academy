@@ -68,12 +68,10 @@ test("owner: drafts for the batch, flagged reports excluded, ready ones approved
   await page.getByRole("button", { name: "Batch reports" }).click();
   await chooseBatchAndMonth(page, "Junior Foundations", month);
   const rowOf = (name: string) => page.locator(".br-table tbody tr", { hasText: name });
-  await expect(rowOf("Aarav Mehta")).toContainText("No draft yet");
-  await expect(rowOf("Diya Sharma")).toContainText("No draft yet");
-
-  // 1. One click makes a draft for everyone who has none.
-  await page.getByRole("button", { name: /^Create drafts \(/ }).click();
+  // 1. Choosing the batch makes a separate draft for everyone who has none, without a press (owner decision, 23 Nov 2026).
   await expect(page.getByText(/\d+ drafts? created\./)).toBeVisible();
+  await expect(rowOf("Aarav Mehta")).not.toContainText("No draft yet");
+  await expect(rowOf("Diya Sharma")).not.toContainText("No draft yet");
   // Only the chosen batch was drafted: players of other batches are not listed at all.
   await expect(page.locator(".br-table tbody tr", { hasText: "Arjun Rao" })).toHaveCount(0);
   await expect(rowOf("Aarav Mehta")).toContainText("The monthly summary is empty.");
