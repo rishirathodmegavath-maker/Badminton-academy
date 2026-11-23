@@ -16,6 +16,7 @@ import {
 import { publicationState } from "../../academy/domain/withdrawal";
 import { REPORT_LIMITS, cleanPriorities } from "../domain/report-sheet";
 import { assembleDraft } from "./draft";
+import { writeFromRecords } from "../domain/batch-rules";
 import {
   withdrawPublished,
   withdrawalReason,
@@ -92,6 +93,8 @@ export async function createReport(a: Actor, input: unknown) {
       periodStart: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
       periodEnd: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
       title: z.string().trim().min(2).max(150),
+      // The one-click batch report: the wording is written from the records (batch-rules.writeFromRecords) for the coach to edit.
+      autoWrite: z.boolean().optional(),
     })
     .parse(input);
   return unit(a, async (tx) => {
@@ -105,6 +108,12 @@ export async function createReport(a: Actor, input: unknown) {
       player,
       v,
     );
+    if (v.autoWrite)
+      Object.assign(
+        data,
+        writeFromRecords({ playerName: player.name, periodStart: v.periodStart, periodEnd: v.periodEnd, evidence: data.evidence, analysis: data.analysis }),
+        { autoWritten: true },
+      );
     const id = crypto.randomUUID();
     const [report] = await tx
       .insert(t.reports)

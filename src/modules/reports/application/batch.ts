@@ -89,6 +89,7 @@ export async function batchCreateDrafts(a: Actor, input: unknown) {
     .extend({
       playerIds: z.array(z.string().min(1).max(200)).min(1).max(MAX_PLAYERS),
       title: z.string().trim().min(2).max(150),
+      autoWrite: z.boolean().optional(),
     })
     .parse(input);
   if (v.periodStart > v.periodEnd) throw new DomainError("The period end must follow its start.");
@@ -109,7 +110,7 @@ export async function batchCreateDrafts(a: Actor, input: unknown) {
       continue;
     }
     try {
-      const made = await createReport(a, { playerId, periodStart: v.periodStart, periodEnd: v.periodEnd, title: v.title });
+      const made = await createReport(a, { playerId, periodStart: v.periodStart, periodEnd: v.periodEnd, title: v.title, autoWrite: v.autoWrite });
       results.push({ playerId, outcome: "CREATED", reportId: made.id });
     } catch (e) {
       if (!(e instanceof DomainError)) throw e;

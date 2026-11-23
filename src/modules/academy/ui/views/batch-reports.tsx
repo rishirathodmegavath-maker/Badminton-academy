@@ -23,9 +23,9 @@ type ApproveResult = { reportId: string; outcome: "PUBLISHED" | "BLOCKED" | "ALR
 /**
  * The whole reporting workflow in one place:
  *   1. Pick the batch (or the whole academy) and the month. The previous month is already chosen.
- *   2. "Create drafts" makes a draft for every selected player who has none, from recorded sessions and attendance only; the
- *      coach's words are never written for them. Reports that are due under the academy's rules can also be prepared in one press
- *      (or by the background worker).
+ *   2. Choosing a batch (or "Create drafts") makes a report for every selected player who has none, written from the records
+ *      only: sessions, attendance, activities done and reviewed observations. It states counts and the coach's own recorded words,
+ *      never praise or scores. Reports that are due under the academy's rules can also be prepared in one press (or by the worker).
  *   3. Each row says whether the report is ready or why it is not, and lists what the records do not contain. A flagged report is
  *      left out of batch approval.
  *   4. The owner opens any row to read or edit it, then approves and publishes the ready ones in one step.
@@ -94,6 +94,8 @@ export function BatchReports(p: WorkspaceProps & { openReport: (reportId: string
         periodEnd: range.end,
         title: range.title,
         playerIds: list.map((r) => r.playerId),
+        // One click: each player's report is written from the records (attendance, activities done, reviewed observations).
+        autoWrite: true,
       });
       setDrafts(out.results);
       await refresh();
@@ -138,8 +140,8 @@ export function BatchReports(p: WorkspaceProps & { openReport: (reportId: string
     });
   }
   // Choosing a batch makes a draft for every one of its players who has none, once for each batch and month, without a press.
-  // Each is still its own report: it is built from recorded sessions and attendance only, no words are written for the coach, and
-  // nothing is approved or published until someone does that. (Left on "All my players", nothing is made until the button is used.)
+  // Each is still its own report, written from the records only (sessions, attendance, activities done, reviewed observations):
+  // the coach can edit every word, and nothing is approved or published until someone does that. (Left on "All my players", nothing is made until the button is used.)
   const autoDrafted = useRef("");
   useEffect(() => {
     if (!batchId || !rows || !canDraft || working || autoDrafted.current === key) return;
@@ -178,8 +180,9 @@ export function BatchReports(p: WorkspaceProps & { openReport: (reportId: string
           </label>
         </div>
         <p className="muted">
-          Choosing a batch creates a separate draft report for each of its players automatically. Pick specific players below to work
-          on only them, or leave every box empty to work on everyone listed.
+          Choosing a batch writes a separate report for each of its players automatically, from the records: attendance, activities
+          done and reviewed coach observations. Nothing is invented or scored. Read or edit any report, then approve. Pick specific
+          players below to work on only them, or leave every box empty to work on everyone listed.
         </p>
       </Pane>
 

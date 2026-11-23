@@ -166,6 +166,8 @@ export type ReportData = {
   group?: string;
   /** A counts-only sentence from the records, made when the draft was created. The coach may use it as the summary. */
   facts?: string;
+  /** The summary, strengths and areas to improve were written from the records when the draft was made (see batch-rules). */
+  autoWritten?: boolean;
   academyName: string;
   playerName: string;
   /** Name of the approver as it was when the report was approved (a snapshot, never rewritten). */
