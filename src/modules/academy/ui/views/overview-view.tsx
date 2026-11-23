@@ -163,6 +163,8 @@ export function OverviewView(p: WorkspaceProps) {
     "en-GB",
     { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" },
   );
+  // The first screen is kept short: today's numbers and what needs attention. The longer summaries open on request.
+  const [more, setMore] = useState(false);
   const review = () => p.nav("Reports", `filter:review|${branch}`);
   const admissions = (filter = "") =>
     p.nav("Admissions", `filter:${filter || "All"}|${branch}`);
@@ -262,6 +264,25 @@ export function OverviewView(p: WorkspaceProps) {
         />
       </div>
       <div className="ov-main-grid">
+        {!today.length && !coming.length ? (
+          // Nothing today and nothing in the next two weeks: one short card instead of two tall empty ones.
+          <Pane
+            title="Training"
+            className="ov-training"
+            action={
+              <button className="text-button" onClick={calendar}>
+                Open calendar <ArrowRight size={17} />
+              </button>
+            }
+          >
+            <Blank
+              title="No sessions scheduled"
+              text="Create a session or add a calendar event to see it here."
+              icon={CalendarDays}
+            />
+          </Pane>
+        ) : (
+          <>
         <Pane
           title="Today’s training"
           className="ov-training"
@@ -389,6 +410,8 @@ export function OverviewView(p: WorkspaceProps) {
             />
           )}
         </Pane>
+          </>
+        )}
         <Pane title="Needs your attention" className="ov-attention">
           {d.permissions.ops && (
             <Attention
@@ -429,6 +452,18 @@ export function OverviewView(p: WorkspaceProps) {
           )}
         </Pane>
       </div>
+      <div className="ov-more">
+        <button
+          type="button"
+          className="secondary ov-more-toggle"
+          aria-expanded={more}
+          aria-controls="ov-more-sections"
+          onClick={() => setMore(!more)}
+        >
+          {more ? "Show less" : "More from your academy"}
+        </button>
+      </div>
+      <div id="ov-more-sections" hidden={!more}>
       <div className="ov-lower-grid">
         <Pane title="Admissions & trials" action={<ChevronRight size={18} />}>
           {d.permissions.ops ? (
@@ -592,6 +627,7 @@ export function OverviewView(p: WorkspaceProps) {
               </button>
             </div>
           )}
+      </div>
       </div>
     </div>
   );

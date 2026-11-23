@@ -1191,3 +1191,13 @@ textarea[aria-invalid="true"]:focus-visible {
   border-color: var(--green);
   box-shadow: 0 0 0 1px var(--green);
 }
+
+/* ---- Overview: the longer summaries open on request ---------------------------------------------------------------------- */
+.ov-more {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-4) 0;
+}
+#ov-more-sections[hidden] {
+  display: none;
+}
