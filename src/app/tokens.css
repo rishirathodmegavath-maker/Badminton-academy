@@ -1,0 +1,218 @@
+/*
+ * Sportozen Badminton Academy — design tokens (Phase 9). Loaded LAST so it refines the legacy variables.
+ *
+ * Brand: the existing deep navy and green are KEPT. Only values that failed WCAG 2.2 AA were refined, and the
+ * status, border and focus tokens that did not exist as a system were added. `npm run check:contrast`
+ * recomputes every pair below and fails if one drops under its required ratio.
+ *
+ *   Kept        --navy #10273d, --navy-deep #0a1e31, --green #087047, --green-dark #075839, --mint #e8f8ef, --bg #f4f7fa
+ *   Refined     --muted #64748b (4.43:1 on --bg, fails) -> --text-muted #536276 (5.78:1 on --bg, 6.22:1 on white)
+ *   Added       --border-strong (controls, 3:1), status text/tint pairs, focus rings, sidebar text roles
+ *   Fonts       Noto Sans for headings and body (UX-D3); was Manrope (headings) and DM Sans (body)
+ */
+/* Noto Sans (UX-D3): one UI font for headings and body, vendored from @fontsource-variable/noto-sans 5.3.0 (SIL OFL 1.1,
+   public/fonts/OFL.txt). Latin, Latin extended and Devanagari (the rupee sign U+20B9 lives there). No package is installed. */
+@font-face {
+  font-family: "Noto Sans Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/noto-sans-latin-ext-wght-normal-v1.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: "Noto Sans Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/noto-sans-latin-wght-normal-v1.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Noto Sans Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/noto-sans-devanagari-wght-normal-v1.woff2") format("woff2-variations");
+  unicode-range: U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20A8,U+20B9,U+20F0,U+25CC,U+A830-A839,U+A8E0-A8FF,U+11B00-11B09;
+}
+:root {
+  /* Brand */
+  --navy: #10273d;
+  --navy-deep: #0a1e31;
+  --navy-soft: #1a3a56; /* hover on navy surfaces */
+  --green: #087047; /* primary action; 6.14:1 on white, white text on it 6.14:1 */
+  --green-dark: #075839; /* hover/pressed; white text 8.52:1 */
+  --green-graphic: #0c8a58; /* icons and illustrations only (>= 3:1) */
+  --mint: #e8f8ef;
+  --mint-strong: #cdeedd;
+
+  /* Surfaces */
+  --bg: #f4f7fa;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #eaf0f5;
+
+  /* Text (all >= 4.5:1 on --surface and on --bg) */
+  --ink: #10243a; /* 15.2:1 */
+  --text: var(--ink);
+  --text-muted: #536276; /* 6.22:1 on white, 5.78:1 on --bg */
+  --muted: var(--text-muted); /* legacy name */
+  --text-on-green: #ffffff;
+  --link: #087047;
+
+  /* Borders */
+  --line: #dde5ee; /* decorative dividers and card edges */
+  --border: var(--line);
+  --border-strong: #718196; /* form controls: 3.7:1 on --bg (WCAG 1.4.11) */
+
+  /* Interaction states */
+  --hover-bg: #eef3f8;
+  --active-bg: var(--mint);
+  --disabled-bg: #e9eef3;
+  --disabled-text: #66768a; /* informational only; disabled controls are exempt but kept legible */
+
+  /* Status: text colour on its tint, all >= 5.5:1; never the only signal (an icon or word accompanies it) */
+  --success: #146c43;
+  --success-bg: #e6f4ec;
+  --warning: #8a5300;
+  --warning-bg: #fff4e0;
+  --error: #a63a35;
+  --error-bg: #fdecea;
+  --info: #1f5f99;
+  --info-bg: #e8f1fb;
+  --red: var(--error); /* legacy names */
+  --amber: var(--warning);
+
+  /* Focus (a visible ring on every interactive element; 3:1 minimum against its surface) */
+  --focus: #0b5fcc; /* 5.96:1 on white */
+  --focus-on-dark: #7cc4ff; /* 8.12:1 on --navy */
+  --focus-ring: 0 0 0 3px #fff, 0 0 0 5px var(--focus);
+
+  /* Navy surfaces (sidebar, drawers) */
+  --nav-text: #c9d6e2; /* 10.29:1 on --navy */
+  --nav-text-muted: #9fb3c8; /* 7.07:1 on --navy */
+  --nav-active-bg: var(--green);
+  --nav-active-text: #ffffff;
+  --nav-hover-bg: var(--navy-soft);
+
+  /* Geometry */
+  --radius: 10px;
+  --radius-sm: 7px;
+  --radius-lg: 14px;
+  --shadow: 0 1px 2px #10273d0f, 0 4px 16px #10273d0d;
+  --shadow-raised: 0 8px 28px #10273d24;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --touch: 44px; /* minimum touch target */
+  --white: #ffffff; /* text and icons on dark or coloured surfaces; surfaces use --surface */
+  --line-soft: #eef3f8; /* faint separators inside a card (rows, table lines) */
+
+  /* Type scale (Wave 5). Every font-size is one of these; ties between steps were resolved up for small text, down for large. */
+  --fs-2xs: 11px;
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-md: 14px;
+  --fs-base: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: 28px;
+  --fs-4xl: 32px;
+
+  /* Breakpoints (Wave 5). A custom property cannot be used inside @media, so these are written down here and in
+     src/shell/breakpoints.ts, and tests/design-standard.test.ts fails if any stylesheet uses another width.
+       phone-small  max-width 479      min-width 480
+       phone        max-width 767      min-width 768    (drawer + bottom bar below 768)
+       tablet       max-width 1023     min-width 1024
+       laptop       max-width 1279     min-width 1280
+       wide         max-width 1535     min-width 1536
+     Write max-width queries as (scale value - 1) and min-width queries as the scale value, so two queries never overlap or leave a gap. */
+  --sidebar-width: 244px;
+  --sidebar-collapsed: 72px;
+  --header-height: 60px;
+  --font: "Noto Sans Variable", "Noto Sans", Arial, sans-serif;
+  --heading: var(--font);
+}
+
+/* --- Accessibility baseline ------------------------------------------------------------------------------ */
+/* Not wrapped in :where(): legacy rules such as `.search input { outline: none }` must not be able to remove the ring. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.ax-sidebar :where(a, button, summary):focus-visible,
+.ax-drawer :where(a, button, summary):focus-visible,
+.login-story :where(a, button):focus-visible {
+  outline-color: var(--focus-on-dark);
+}
+input,
+select,
+textarea {
+  border-color: var(--border-strong);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+:where(button, input, select, textarea)[disabled],
+:where(button)[aria-disabled="true"] {
+  background-color: var(--disabled-bg);
+  color: var(--disabled-text);
+  cursor: not-allowed;
+}
+/* Table captions name the table for assistive technology and read as a small heading. */
+caption {
+  caption-side: top;
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--heading);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Touch targets on coarse pointers (phones, tablets). */
+@media (pointer: coarse) {
+  :where(button, select, input:not([type="checkbox"]):not([type="radio"]), .tabs button) {
+    min-height: var(--touch);
+  }
+  :where(a.secondary, a.primary) {
+    min-height: var(--touch);
+    display: inline-flex;
+    align-items: center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

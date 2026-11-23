@@ -1,0 +1,8 @@
+node_modules
+.next
+.data
+artifacts
+test-results
+package-lock.json
+sportozen-codex-pack
+migrations/meta

@@ -1,0 +1,1193 @@
+/* Application shell (Phase 9): sidebar, drawer, header, account menu. Uses only tokens from tokens.css. */
+.ax-shell {
+  --sw: var(--sidebar-width);
+  min-height: 100vh;
+  background: var(--bg);
+}
+.ax-shell[data-collapsed="true"] {
+  --sw: var(--sidebar-collapsed);
+}
+
+/* ---- Sidebar ---------------------------------------------------------------------------------------- */
+.ax-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sw);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3);
+  background: linear-gradient(160deg, var(--navy), var(--navy-deep));
+  color: var(--nav-text);
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: width 0.18s ease;
+  outline: none;
+}
+.ax-sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+}
+.ax-wordmark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--touch);
+  color: var(--white);
+  text-decoration: none;
+  line-height: 1.1;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+}
+.ax-wordmark-name {
+  font-family: var(--heading);
+  font-weight: 800;
+  font-size: var(--fs-2xl);
+  letter-spacing: -0.02em;
+}
+.ax-wordmark-product {
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.12em;
+  color: var(--nav-text-muted);
+  margin-top: 3px;
+}
+.ax-academy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  background: #ffffff10;
+}
+.ax-monogram,
+.ax-avatar {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  font-family: var(--heading);
+  font-weight: 800;
+  font-size: var(--fs-md);
+  letter-spacing: 0.02em;
+}
+.ax-avatar {
+  border-radius: 50%;
+  background: var(--mint);
+  color: var(--green-dark);
+}
+.ax-academy-text,
+.ax-account-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ax-academy-text strong,
+.ax-account-text strong {
+  font-size: var(--fs-md);
+  line-height: 1.25;
+  color: var(--white);
+  overflow-wrap: anywhere;
+}
+.ax-academy-text small,
+.ax-account-text small {
+  font-size: var(--fs-xs);
+  color: var(--nav-text-muted);
+}
+.ax-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ax-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--nav-text);
+  font: inherit;
+  font-size: var(--fs-base);
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ax-nav-item:hover {
+  background: var(--nav-hover-bg);
+  color: var(--white);
+}
+.ax-nav-item[aria-current="page"] {
+  background: var(--nav-active-bg);
+  color: var(--nav-active-text);
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 var(--mint);
+}
+.ax-nav-item svg {
+  flex: none;
+}
+.ax-chip {
+  margin-left: auto;
+  white-space: nowrap;
+  flex: none;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  color: inherit; /* follows the item, so it keeps the item's contrast on navy and on green */
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+}
+.ax-sidebar-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: var(--space-3);
+  border-top: 1px solid #ffffff1f;
+}
+.ax-account-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  min-height: var(--touch);
+  border-radius: var(--radius-sm);
+  color: var(--nav-text);
+  text-decoration: none;
+}
+.ax-account-link:hover {
+  background: var(--nav-hover-bg);
+}
+.ax-signout,
+.ax-collapse {
+  color: var(--nav-text);
+}
+
+/* Collapsed sidebar: icons only; names remain available to assistive technology and as tooltips. */
+.ax-shell[data-collapsed="true"] .ax-academy-text,
+.ax-shell[data-collapsed="true"] .ax-account-text,
+.ax-shell[data-collapsed="true"] .ax-wordmark,
+.ax-shell[data-collapsed="true"] .ax-chip,
+.ax-shell[data-collapsed="true"] .ax-nav-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.ax-shell[data-collapsed="true"] .ax-academy,
+.ax-shell[data-collapsed="true"] .ax-nav-item,
+.ax-shell[data-collapsed="true"] .ax-account-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+.ax-shell[data-collapsed="true"] .ax-sidebar-top {
+  justify-content: center;
+}
+
+/* ---- Workspace --------------------------------------------------------------------------------------- */
+.ax-workspace {
+  margin-left: var(--sw);
+  min-width: 0;
+  transition: margin-left 0.18s ease;
+}
+.ax-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--header-height);
+  padding: 0 var(--space-5);
+  background: #ffffffec;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.ax-icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: var(--touch);
+  height: var(--touch);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+.ax-icon-button.ax-on-dark {
+  background: transparent;
+  border-color: #ffffff59;
+  color: var(--white);
+}
+.ax-breadcrumb {
+  min-width: 0;
+}
+.ax-breadcrumb ol {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--fs-md);
+  color: var(--text-muted);
+}
+.ax-breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.ax-breadcrumb strong {
+  color: var(--ink);
+}
+.ax-header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.ax-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-sunken);
+  color: var(--ink);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ax-account {
+  position: relative;
+}
+.ax-account-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--touch);
+  padding: 0 var(--space-2);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  cursor: pointer;
+}
+.ax-account-button:hover,
+.ax-account-button[aria-expanded="true"] {
+  background: var(--hover-bg);
+  border-color: var(--line);
+}
+.ax-account-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 40;
+  width: 260px;
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-raised);
+}
+.ax-account-panel p {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-md);
+}
+.ax-account-panel small {
+  color: var(--text-muted);
+}
+.ax-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--touch);
+  margin-top: 2px;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-base);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ax-menu-item:hover {
+  background: var(--hover-bg);
+}
+.ax-main {
+  padding-top: var(--space-6);
+  outline: none;
+}
+.ax-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  background: #0a1e3180;
+}
+
+/* ---- Laptops, tablets and phones (below 1280 px): the sidebar is a drawer; from 1280 px it stays on screen ---- */
+@media (max-width: 1279px) {
+  .ax-workspace {
+    margin-left: 0;
+  }
+  .ax-sidebar {
+    width: min(320px, 88vw);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition:
+      transform 0.2s ease,
+      visibility 0s linear 0.2s;
+    z-index: 35;
+  }
+  .ax-shell[data-open="true"] .ax-sidebar {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.2s ease;
+    box-shadow: var(--shadow-raised);
+  }
+  .ax-header {
+    padding: 0 var(--space-4);
+  }
+  .ax-main {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}
+@media (max-width: 767px) {
+  .ax-account-name {
+    display: none;
+  }
+  .ax-header-right .ax-pill {
+    display: none;
+  }
+  .ax-breadcrumb li:not(:last-child) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-sidebar,
+  .ax-workspace {
+    transition: none;
+  }
+}
+
+/* ---- Phone bottom bar (UX N3): the portal's main sections within thumb reach, below 768 px only ------------ */
+.ax-bottom-bar {
+  display: none;
+}
+@media (max-width: 767px) {
+  .ax-bottom-bar {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .ax-bottom-bar ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ax-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
+    min-height: 56px;
+    padding: 6px 4px;
+    border: 0;
+    background: none;
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+  .ax-bottom-item[aria-current="page"] {
+    color: var(--green);
+    box-shadow: inset 0 3px 0 var(--green);
+  }
+  .ax-shell[data-bottom-bar="true"] .ax-main {
+    padding-bottom: 88px;
+  }
+}
+
+/* ---- Messages and states that use the status tokens (replaces the low-contrast legacy toast) ------------ */
+.toast {
+  background: var(--success-bg);
+  border-color: var(--success);
+  color: var(--success);
+  font-size: var(--fs-sm);
+}
+.notice {
+  color: var(--ink);
+}
+.error,
+.global-alert {
+  color: var(--error);
+}
+.empty,
+.loading {
+  color: var(--text-muted);
+}
+
+/* ---- Not found / access denied / loading skeletons ------------------------------------------------------ */
+.ax-state {
+  max-width: 560px;
+  margin: var(--space-6) auto;
+  padding: var(--space-6);
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.ax-state h1,
+.ax-state h2 {
+  margin: var(--space-2) 0;
+}
+.ax-state p {
+  color: var(--text-muted);
+}
+.ax-state .button-row {
+  justify-content: center;
+}
+.ax-skeleton {
+  display: grid;
+  gap: var(--space-4);
+}
+.ax-skeleton > span {
+  display: block;
+  height: 88px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--surface-sunken), var(--bg), var(--surface-sunken));
+  background-size: 200% 100%;
+  animation: ax-shimmer 1.4s linear infinite;
+}
+.ax-skeleton > span:first-child {
+  height: 36px;
+  width: 40%;
+}
+@keyframes ax-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ---- Role homes (Coach, Finance, Nutrition Pro) ---------------------------------------------------------- */
+.ax-main-overview .page-heading,
+.ax-main-overview .workspace-footer {
+  display: none;
+}
+.rh {
+  display: grid;
+  gap: var(--space-5);
+}
+.rh-welcome {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.rh-welcome h1 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-2xl);
+}
+.rh-welcome p {
+  margin: 0;
+  color: var(--text-muted);
+}
+.rh-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+.rh-metric {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+}
+button.rh-metric {
+  cursor: pointer;
+}
+button.rh-metric:hover {
+  border-color: var(--green);
+}
+.rh-icon {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--mint);
+  color: var(--green);
+}
+.rh-metric-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rh-label {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+.rh-metric strong {
+  font-family: var(--heading);
+  font-size: var(--fs-3xl);
+  line-height: 1.1;
+}
+.rh-metric small {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.rh-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-4);
+}
+.rh-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.rh-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.rh-list li > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.rh-list small {
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+.rh-actions {
+  display: grid;
+  gap: var(--space-2);
+}
+.rh-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-2);
+}
+@media (max-width: 1023px) {
+  .rh-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Sign-in additions (Google, back link) ---------------------------------------------------------------- */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.login-google {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: var(--touch);
+}
+.login-hint {
+  margin: var(--space-2) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  color: var(--link);
+  font-size: var(--fs-md);
+  text-decoration: none;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* ---- Search boxes: the ring sits on the whole box (3:1 or better), not on the borderless inner input ------- */
+.wb-search:focus-within,
+.search:focus-within,
+.ops-search:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.wb-search input:focus-visible,
+.search input:focus-visible,
+.ops-search input:focus-visible {
+  outline: none;
+}
+
+/* The academy's own logo in the sidebar (replaces the two-letter monogram). */
+.ax-logo {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: var(--surface);
+}
+
+/* ---- Header player search (UX N5) ------------------------------------------------------------------------- */
+.ax-search input {
+  width: 200px;
+  min-height: 36px;
+  margin: 0;
+}
+@media (max-width: 767px) {
+  .ax-search {
+    display: none;
+  }
+}
+
+/* ---- Training Studio layout: one spacing scale (8 px steps), the page scrolls, the side panes stay in view ---- */
+.filter-group {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.filter-caption {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.library .skill-pills {
+  gap: 8px;
+  margin-bottom: 0;
+}
+.library .skill-pills button {
+  min-height: 32px;
+  padding: 6px 12px;
+}
+.library .filter-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px 8px;
+  padding-bottom: 0;
+}
+.library .filter-row > label {
+  grid-column: span 2;
+  gap: 4px;
+  margin-bottom: 0;
+}
+.library .filter-row > label:nth-child(n + 4) {
+  grid-column: span 3;
+}
+.library .filter-row select {
+  min-height: 40px;
+}
+.library .result-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.library .result-heading span:last-child {
+  max-width: none;
+}
+.library .drill-grid {
+  grid-template-columns: repeat(auto-fill, minmax(176px, 1fr));
+  gap: 16px;
+}
+.library .drill-card-body {
+  padding: 16px;
+}
+.library .drill-card h3 {
+  font-size: var(--fs-md);
+  margin: 8px 0;
+}
+.library .drill-bottom {
+  margin: 8px 0 16px;
+}
+.library .card-actions {
+  gap: 8px;
+}
+.library .card-actions > .secondary,
+.library .card-actions > .primary {
+  min-height: 36px;
+}
+.library .empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+@media (max-width: 767px) {
+  .library .filter-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .library .filter-row > label,
+  .library .filter-row > label:nth-child(n + 4) {
+    grid-column: auto;
+  }
+  .library .filter-row > label:last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1280px) {
+  .training-tabs {
+    margin-bottom: 24px;
+  }
+  .studio-grid {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1.05fr) minmax(0, 0.9fr);
+    gap: 24px;
+    align-items: start;
+  }
+  .studio-grid > .library,
+  .studio-grid > .drill-preview,
+  .studio-grid > .builder {
+    padding: 24px;
+    border-radius: 12px;
+  }
+  /* The library grows with its drills and the page scrolls; it is no longer a small scrolling box inside the page. */
+  .studio-grid > .library {
+    max-height: none;
+    overflow: visible;
+  }
+  /* The drill being looked at and the session being built stay beside the list while it scrolls. */
+  .studio-grid > .drill-preview,
+  .studio-grid > .builder {
+    position: sticky;
+    top: calc(var(--header-height, 60px) + 16px);
+    max-height: calc(100dvh - var(--header-height, 60px) - 32px);
+    overflow-y: auto;
+  }
+  .library .section-heading {
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .library .section-heading p {
+    font-size: var(--fs-sm);
+    margin-top: 8px;
+  }
+  .library .library-toolbar {
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+}
+
+/* ---- Training Studio: one calm box with three steps (Explore, Drill details, Session) ---- */
+.training-box {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px #10182808, 0 12px 32px #10182810;
+  min-width: 0;
+  scroll-margin-top: calc(var(--header-height, 60px) + 8px);
+}
+.training-steps {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 12px 16px;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--surface), var(--mint));
+  border-radius: 14px 14px 0 0;
+  position: sticky;
+  top: var(--header-height, 60px);
+  z-index: 5;
+}
+.training-steps li { display: block; }
+.training-steps button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 18px 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+.training-steps button:hover {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 2px 8px #10182814;
+}
+.training-steps button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.training-steps button.active {
+  background: var(--surface);
+  color: var(--green-dark);
+  border-color: var(--line);
+  box-shadow: 0 2px 10px #17644e1f;
+}
+.training-steps .step-number {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--line);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.training-steps button.active .step-number { background: var(--green); color: var(--surface); }
+.training-step-panel { padding: 24px; min-width: 0; }
+.training-step-panel[hidden] { display: none; }
+.training-box .library,
+.training-box .drill-preview,
+.training-box .builder {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  max-height: none;
+  overflow: visible;
+  position: static;
+}
+.training-box .library .drill-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.training-box .library .drill-card { transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease; }
+.training-box .library .drill-card:hover,
+.training-box .library .drill-card:focus-within {
+  transform: translateY(-2px);
+  border-color: #b9d4c6;
+  box-shadow: 0 10px 24px #17644e1a;
+}
+/* Drill details open full width: the picture on one side, the instructions on the other. */
+.training-box .drill-preview { max-width: 1100px; margin: 0 auto; }
+.training-box .drill-preview > header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.training-box .drill-preview > header h2 { margin: 0 auto 0 0; }
+.back-to-drills { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; }
+.drill-preview-body { display: grid; gap: 16px; min-width: 0; }
+.drill-preview-media { display: grid; gap: 12px; min-width: 0; align-content: start; }
+@media (min-width: 1024px) {
+  .training-box .drill-preview-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    column-gap: 32px;
+    align-items: start;
+  }
+  .training-box .drill-preview-media {
+    position: sticky;
+    top: calc(var(--header-height, 60px) + 88px);
+  }
+}
+.training-box .builder { max-width: 1100px; margin: 0 auto; }
+.training-box .builder.unstarted { max-width: 560px; text-align: center; padding: 24px 0; }
+/* "Your session": what has been added so far, always one tap from the builder. */
+.training-session-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 -6px 18px #10182810;
+}
+.training-session-bar > span { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 767px) {
+  .training-box { border-radius: 10px; }
+  .training-steps { gap: 4px; padding: 8px; top: 0; position: static; }
+  .training-steps li { flex: 1; }
+  .training-steps button { width: 100%; justify-content: center; padding: 8px 6px; font-size: var(--fs-sm); gap: 6px; min-height: 44px; }
+  .training-steps .step-number { display: none; }
+  .training-step-panel { padding: 16px 12px; }
+  .training-session-bar { padding: 10px 12px; }
+}
+
+/* ---- Polish layer (Wave 2-4 review): depth, hover and focus feedback shared by every screen; motion respects the user's setting ---- */
+:root {
+  --lift-shadow: 0 1px 2px #10182808, 0 6px 18px #17644e14;
+  --lift-shadow-strong: 0 2px 4px #10182810, 0 12px 28px #17644e24;
+  --focus-ring: 0 0 0 3px #17644e2e;
+}
+.panel,
+.metric-card,
+.rh-metric {
+  box-shadow: 0 1px 2px #1018280a;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+button.metric-card:hover,
+button.rh-metric:hover,
+a.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--lift-shadow-strong);
+}
+button.metric-card:active,
+button.rh-metric:active { transform: translateY(0); box-shadow: var(--lift-shadow); }
+.panel:hover { box-shadow: var(--lift-shadow); }
+button.primary,
+button.secondary,
+a.primary,
+a.secondary {
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
+}
+button.primary:hover:not(:disabled),
+a.primary:hover {
+  box-shadow: 0 4px 12px #17644e40;
+  transform: translateY(-1px);
+  filter: none;
+  background: var(--green-dark);
+}
+button.secondary:hover:not(:disabled),
+a.secondary:hover {
+  background: var(--mint);
+  border-color: #b6cfbd;
+  box-shadow: 0 2px 8px #17644e14;
+  filter: none;
+}
+button.primary:active:not(:disabled),
+button.secondary:active:not(:disabled) { transform: translateY(0); box-shadow: none; }
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+input:not([type="checkbox"]):not([type="radio"]):hover:not(:disabled),
+select:hover:not(:disabled),
+textarea:hover:not(:disabled) { border-color: #a9c4b5; }
+input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: var(--focus-ring);
+}
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+/* Tables and lists: the row under the pointer is easy to follow. */
+.ops-table tbody tr { transition: background 0.12s ease; }
+.ops-table tbody tr:hover { background: #f3f8f4; }
+.tabs button { transition: background 0.15s ease, color 0.15s ease; }
+.tabs button:not(.active):hover { background: var(--mint); color: var(--green-dark); }
+/* Dialogs rise gently instead of snapping in. */
+dialog[open],
+[role="dialog"] { animation: dialog-rise 0.18s ease-out; }
+@keyframes dialog-rise {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+.toast { box-shadow: var(--lift-shadow-strong); animation: dialog-rise 0.2s ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  button.metric-card:hover, button.rh-metric:hover, button.primary:hover:not(:disabled),
+  .training-box .library .drill-card:hover { transform: none; }
+}
+
+/* Phones: the calendar's filters stay readable (one full-width row each) and the toolbar wraps tidily. */
+@media (max-width: 767px) {
+  .wb-toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
+  .reference-view .wb-toolbar > select[aria-label^="Calendar "] { flex: 1 1 100%; width: 100%; max-width: none; min-width: 0; min-height: 44px; font-size: var(--fs-md); }
+  .wb-toolbar .wb-date-control { flex: 1 1 auto; }
+  .wb-toolbar .primary { flex: 1 1 100%; min-height: 44px; }
+}
+
+/* Choice groups: the legend sits clear of the first option, options have room and a hover cue. */
+.choice-group { padding-top: 12px; }
+.choice-group legend { padding: 0 6px; margin-bottom: 4px; font-weight: 600; }
+.choice-group label { transition: background 0.12s ease; border-radius: 6px; }
+.choice-group label:hover { background: #ffffffa0; }
+
+/* A field with a problem keeps its red edge while it has focus. */
+input[aria-invalid="true"]:focus-visible,
+select[aria-invalid="true"]:focus-visible,
+textarea[aria-invalid="true"]:focus-visible {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px #ad403b2e;
+}
+
+/* =============================================================================================================== */
+/* Wave 5: responsive refinements, touch targets and drill library consistency                                       */
+/* Written once, here, on the breakpoint scale in tokens.css. Nothing above this line was removed.                    */
+/* =============================================================================================================== */
+
+/* ---- Tablet header (768 to 1023) -------------------------------------------------------------------------------- */
+/* At 768 px the right-hand group of the header was 706 px wide: the whole page scrolled sideways by 13 px, the menu button
+   shrank to 35 px and the page title was squeezed to nothing. The menu button keeps its size, the search is a little
+   narrower and the place pill (the city) gives way first, then the account name on tablets; the environment notice stays. The same
+   compaction covers 1024 to 1279, where the menu is still a drawer (the owner's decision) but the page is wide enough to show more. */
+.ax-icon-button {
+  flex: none;
+}
+.ax-header-right {
+  min-width: 0;
+}
+@media (max-width: 1279px) {
+  .ax-search input {
+    width: 150px;
+  }
+  .ax-header-right .ax-pill-place {
+    display: none;
+  }
+}
+@media (max-width: 1279px) {
+  .ax-breadcrumb li:not(:last-child) {
+    display: none;
+  }
+}
+@media (max-width: 1023px) {
+  .ax-account-name {
+    display: none;
+  }
+}
+
+/* ---- Collapsible menu group (the "Batches" entry: branch and batch steps) ------------------------------------------------ */
+.ax-nav-group {
+  width: 100%;
+}
+.ax-nav-group .ax-group-chevron {
+  margin-left: auto;
+  flex: none;
+  transition: transform 0.15s ease;
+}
+.ax-nav-group[aria-expanded="true"] .ax-group-chevron {
+  transform: rotate(180deg);
+}
+.ax-subnav {
+  list-style: none;
+  margin: var(--space-1) 0 var(--space-2);
+  padding: 0 0 0 var(--space-5);
+}
+.ax-subnav[hidden] {
+  display: none;
+}
+.ax-subnav-item {
+  font-size: var(--fs-sm);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-nav-group .ax-group-chevron {
+    transition: none;
+  }
+}
+.ax-shell[data-collapsed="true"] .ax-nav-group .ax-group-chevron {
+  display: none;
+}
+
+/* ---- Touch targets (WCAG 2.5.5, 44 px) on touch screens ------------------------------------------------------------ */
+/* The base rule in tokens.css is wrapped in :where(), so any component rule with a smaller min-height (36 to 41 px on the
+   drill cards, pills, row buttons, selects and inputs) won it. A minimum is only ever a floor, so !important cannot make a
+   control smaller than its own design; it can only lift the short ones. */
+@media (pointer: coarse) {
+  button,
+  select,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="range"]),
+  [role="tab"],
+  .skip-link {
+    min-height: var(--touch) !important;
+  }
+  .favourite,
+  .icon-button,
+  .tabs button,
+  .ax-icon-button,
+  .text-button,
+  .library-toolbar > .secondary {
+    min-width: var(--touch);
+  }
+  label:has(> input[type="checkbox"]),
+  label:has(> input[type="radio"]) {
+    min-height: var(--touch);
+    align-items: center;
+  }
+}
+
+/* A filter select in a toolbar could be squeezed to 29 px (Fees, phone width): unreadable and untappable. */
+@media (max-width: 767px) {
+  .wb-toolbar > select {
+    min-width: 8rem;
+  }
+}
+
+/* ---- Drill library ------------------------------------------------------------------------------------------------ */
+/* One filter grid: the five filters are equal columns (five across on a laptop, three on a tablet, two on a phone), instead
+   of three wide boxes above two wider ones. */
+@media (min-width: 768px) {
+  .library .filter-row {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--space-4) var(--space-2);
+  }
+  .library .filter-row > label,
+  .library .filter-row > label:nth-child(n + 4) {
+    grid-column: auto;
+  }
+}
+/* The chosen drill used a light green (#33a86a, 2.9:1 on white) for its ring; the brand green passes 3:1. */
+.drill-card.selected-drill {
+  border-color: var(--green);
+  box-shadow: 0 0 0 1px var(--green);
+}

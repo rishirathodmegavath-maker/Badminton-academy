@@ -1,0 +1,17 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.data/
+test-results/
+playwright-report/
+*.tsbuildinfo
+
+.next-redesign/
+
+.next-redesign-dev/
+
+.next-webpack-dev/
+
+# Generated delivery archives and superseded source exports.
+exports/
